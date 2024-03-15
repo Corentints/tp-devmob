@@ -1,13 +1,13 @@
-import React from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import React from 'react';
+import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
-import Movie from "../models/Movie";
-import Colors from "../constants/Colors";
+import Movie from '../models/Movie';
+import Colors from '../constants/Colors';
 
 type ListItemMovieParams = {
-  movie: Movie
-  onClick : () => void
-}
+  movie: Movie;
+  onClick: () => void;
+};
 
 const ListItemMovie = ({ movie, onClick }: ListItemMovieParams) => {
   return (
@@ -26,8 +26,8 @@ const ListItemMovie = ({ movie, onClick }: ListItemMovieParams) => {
         </View>
       </View>
     </TouchableOpacity>
-  )
-}
+  );
+};
 
 export default ListItemMovie;
 
@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 12,
     justifyContent: 'center',
-    marginBottom: 10
+    marginBottom: 10,
   },
   titleContainer: {
     flexDirection: 'row',

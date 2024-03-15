@@ -3,18 +3,14 @@ import { View, StyleSheet, Text, Image } from 'react-native';
 import Icons from '../constants/Icons';
 import Colors from '../constants/Colors';
 
-
-
 type DisplayErrorProps = {
   message: string;
 };
 
-const DisplayError = ({ message = "Une erreur c'est produite" } : DisplayErrorProps) => (
+const DisplayError = ({ message = "Une erreur c'est produite" }: DisplayErrorProps) => (
   <View style={styles.container}>
     <Image source={Icons.error} style={styles.icon} />
-    <Text style={styles.errorText}>
-      {message}
-    </Text>
+    <Text style={styles.errorText}>{message}</Text>
   </View>
 );
 
