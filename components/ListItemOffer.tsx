@@ -27,6 +27,7 @@ const ListItemOffer = ({ offer, onClick }: ListItemOfferParams) => {
           </Text>
 
           <IconButton
+            style={{ position: 'absolute', right: 0 }}
             icon={isOfferInFavoris ? 'heart' : 'heart-outline'}
             iconColor={Colors.mainGreen}
             size={20}
@@ -65,6 +66,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   titleContainer: {
+    position: 'relative',
     flexDirection: 'row',
     alignItems: 'center',
   },

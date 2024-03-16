@@ -1,7 +1,7 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../routes/RootStack';
 import { useEffect, useState } from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import { useDispatch, useSelector } from 'react-redux';
 import { GlobalStoreProps } from '../store/globalStore';
 import DisplayError from '../components/DisplayError';
@@ -36,6 +36,7 @@ function OfferScreen({ route, navigation }: OfferScreenProps) {
       }
       setIsLoading(false);
     }
+
     void getOffer();
   }, []);
 
@@ -46,14 +47,14 @@ function OfferScreen({ route, navigation }: OfferScreenProps) {
   return (
     <View style={styles.container}>
       <View style={styles.rowOne}>
-        <Text style={{ fontSize: 24, fontWeight: '600' }}>
+        <Text style={styles.title}>
           {offer.carMake} {offer.carModel}
         </Text>
       </View>
       <View style={styles.rowTwo}>
         <Text style={styles.setionTitle}>Information :</Text>
-        <Text style={{ fontSize: 14 }}>Prix : {offer.price}</Text>
-        <Text style={{ fontSize: 14 }}>Année de fabrication : {offer.carModelYear}</Text>
+        <Text>Prix : {offer.price}</Text>
+        <Text>Année de fabrication : {offer.carModelYear}</Text>
 
         <Text style={styles.setionTitle}>Vendeur :</Text>
         <View
@@ -64,27 +65,18 @@ function OfferScreen({ route, navigation }: OfferScreenProps) {
             gap: 15,
           }}
         >
-          <Avatar.Image
-            source={{ uri: offer.avatar }}
-            size={50}
-            style={{
-              backgroundColor: Colors.background,
-              borderColor: Colors.mainGreen,
-              borderWidth: 2,
-              justifyContent: 'center',
-            }}
-          />
+          <Avatar.Image source={{ uri: offer.avatar }} size={50} style={styles.avatar} />
           <View>
-            <Text style={{ fontSize: 14 }}>{offer.saler}</Text>
-            <View style={{ display: 'flex', flexDirection: 'row', gap: 5 }}>
-              <Text style={{ fontSize: 10 }}>Pays: {offer.country}</Text>
-              <Text style={{ fontSize: 10 }}>Ville: {offer.city}</Text>
-              <Text style={{ fontSize: 10 }}>Tel. {offer.phone}</Text>
+            <Text>{offer.saler}</Text>
+            <View style={styles.salerInfosContainer}>
+              <Text style={styles.smallText}>Pays: {offer.country}</Text>
+              <Text style={styles.smallText}>Ville: {offer.city}</Text>
+              <Text style={styles.smallText}>Tel. {offer.phone}</Text>
             </View>
           </View>
         </View>
         <Text style={styles.setionTitle}>Description :</Text>
-        <Text style={{ fontSize: 14 }}>{offer.description}</Text>
+        <Text>{offer.description}</Text>
       </View>
       <View style={styles.rowThree}>
         {favoris.find((m) => m.id === offer?.id) == null ? (
@@ -113,6 +105,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  title: {
+    fontSize: 24,
+    fontWeight: '600',
+  },
+  baseText: {
+    fontSize: 14,
+  },
+  smallText: {
+    fontSize: 10,
+  },
   setionTitle: {
     fontSize: 16,
     fontWeight: '600',
@@ -127,9 +129,20 @@ const styles = StyleSheet.create({
   rowTwo: {
     flex: 4,
   },
+  avatar: {
+    backgroundColor: Colors.background,
+    borderColor: Colors.mainGreen,
+    borderWidth: 2,
+    justifyContent: 'center',
+  },
   rowThree: {
     flex: 4,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  salerInfosContainer: {
+    display: 'flex',
+    flexDirection: 'row',
+    gap: 5,
   },
 });

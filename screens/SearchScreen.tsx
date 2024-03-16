@@ -38,7 +38,6 @@ function SearchScreen({ navigation }: Props) {
       setOffers(offers);
       setIsLoading(false);
     } catch (error) {
-      // TODO error handling
       setIsError(true);
     }
   }
@@ -46,6 +45,15 @@ function SearchScreen({ navigation }: Props) {
   useEffect(() => {
     void fetchOffers();
   }, [filter]);
+
+  function getFiltersCount(): number {
+    return Object.keys(filter).reduce((acc, key) => {
+      if (filter[key as keyof Filter]) {
+        return acc + 1;
+      }
+      return acc;
+    }, 0);
+  }
 
   return (
     <View style={styles.container}>
@@ -68,17 +76,22 @@ function SearchScreen({ navigation }: Props) {
               dispatch(addOrUpdateFilter({ key: 'query', value: text }));
             }}
             autoCapitalize="none"
-            style={{ backgroundColor: Colors.lightGrey, flex: 1 }}
+            style={styles.searchBar}
           />
-          <IconButton
-            onPress={() => {
-              setFiltersOpened(!filtersOpened);
-            }}
-            mode="contained"
-            icon={'filter'}
-            style={{ backgroundColor: Colors.mainGreen }}
-            iconColor={Colors.background}
-          />
+          <View style={{ position: 'relative' }}>
+            <IconButton
+              onPress={() => {
+                setFiltersOpened(!filtersOpened);
+              }}
+              mode="contained"
+              icon={'filter'}
+              style={{ backgroundColor: Colors.background }}
+              iconColor={Colors.mainGreen}
+            />
+            <View style={styles.countContainer}>
+              <Text style={styles.countText}>{getFiltersCount()}</Text>
+            </View>
+          </View>
           <FiltersModal filtersOpened={filtersOpened} onDismiss={hideFiltersModal} />
         </View>
         <Text style={styles.offersLength}>
@@ -123,5 +136,22 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     alignItems: 'center',
     gap: 10,
+  },
+  countContainer: {
+    position: 'absolute',
+    top: 0,
+    right: 0,
+    borderRadius: 50,
+    backgroundColor: Colors.mainGreen,
+    padding: 5,
+  },
+  searchBar: {
+    backgroundColor: Colors.lightGrey,
+    flex: 1,
+  },
+  countText: {
+    color: Colors.background,
+    fontSize: 10,
+    fontWeight: 'bold',
   },
 });

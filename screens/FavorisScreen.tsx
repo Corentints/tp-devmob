@@ -5,11 +5,21 @@ import ListItemOffer from '../components/ListItemOffer';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../routes/RootStack';
 import Offer from '../models/Offer';
+import { useLayoutEffect } from 'react';
+import { HeaderBackButton } from '@react-navigation/elements';
 
 type Props = StackScreenProps<RootStackParamList>;
 
 function FavorisScreen({ navigation }: Props) {
   const favoris = useSelector<GlobalStoreProps, Array<Offer>>((state) => state.favori);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerLeft: () => (
+        <HeaderBackButton label="Annonces" onPress={() => navigation.navigate('Search')} />
+      ),
+    });
+  }, []);
 
   const navigateFilmDetails = (offerId: string) => {
     navigation.navigate('Offer', { offerId });
@@ -41,6 +51,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    paddingTop: 12,
   },
   rowOne: {
     flex: 2,
