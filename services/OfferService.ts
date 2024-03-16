@@ -1,6 +1,12 @@
 import Offer from '../models/Offer';
+import Filter from '../models/Filter';
 
-export async function getOffers(query?: string): Promise<Array<Offer>> {
+function getOfferPrice(offer: Offer): number {
+  const formatted = offer.price.replace(/[^\d,]/g, '').replace(',', '.');
+  return Math.floor(Math.round(parseFloat(formatted)));
+}
+
+export async function getOffers(filter?: Filter): Promise<Array<Offer>> {
   try {
     const res: Array<Offer> = [];
 
@@ -22,12 +28,45 @@ export async function getOffers(query?: string): Promise<Array<Offer>> {
       });
     });
 
-    if (query && query !== '') {
-      return res.filter(
-        (m) =>
-          m.carMake.toLowerCase().includes(query.toLowerCase()) ||
-          m.carModel.toLowerCase().includes(query.toLowerCase())
-      );
+    if (filter) {
+      return res.filter((offer) => {
+        if (filter.minPrice && getOfferPrice(offer) < filter.minPrice) {
+          return false;
+        }
+
+        if (filter.maxPrice && getOfferPrice(offer) > filter.maxPrice) {
+          return false;
+        }
+
+        if (filter.carModelYear && offer.carModelYear !== filter.carModelYear) {
+          return false;
+        }
+
+        if (filter.query) {
+          const carFullName = `${offer.carMake.toLowerCase()} ${offer.carModel.toLowerCase()}`;
+
+          if (!carFullName.includes(filter.query.toLowerCase())) {
+            return false;
+          }
+        }
+
+        if (filter.country && !offer.country.toLowerCase().includes(filter.country.toLowerCase())) {
+          return false;
+        }
+
+        if (filter.city && !offer.city.toLowerCase().includes(filter.city.toLowerCase())) {
+          return false;
+        }
+
+        if (
+          filter.description &&
+          !offer.description.toLowerCase().includes(filter.description.toLowerCase())
+        ) {
+          return false;
+        }
+
+        return true;
+      });
     }
 
     return res;

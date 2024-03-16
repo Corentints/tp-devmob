@@ -8,15 +8,17 @@ import theme from './constants/Theme';
 
 export default function App() {
   return (
-    <PaperProvider theme={theme}>
-      <View style={styles.container}>
-        <Provider store={globalStore}>
-          <NavigationContainer>
-            <RootStack />
-          </NavigationContainer>
-        </Provider>
-      </View>
-    </PaperProvider>
+    <Provider store={globalStore}>
+      <PaperProvider theme={theme}>
+        <View style={styles.container}>
+          <Provider store={globalStore}>
+            <NavigationContainer>
+              <RootStack />
+            </NavigationContainer>
+          </Provider>
+        </View>
+      </PaperProvider>
+    </Provider>
   );
 }
 
