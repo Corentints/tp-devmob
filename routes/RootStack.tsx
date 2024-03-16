@@ -6,7 +6,7 @@ import FavorisScreen from '../screens/FavorisScreen';
 
 export type RootStackParamList = {
   Search: undefined;
-  Movie: { movieId: number };
+  Offer: { offerId: string };
   Favoris: undefined;
 };
 
@@ -21,9 +21,13 @@ function RootStack() {
       <SearchNavigation.Screen
         name="Search"
         component={SearchScreen}
-        options={{ title: 'Liste de film' }}
+        options={{ title: 'Liste des annonces' }}
       />
-      <SearchNavigation.Screen name="Movie" component={MovieScreen} options={{ title: 'Film' }} />
+      <SearchNavigation.Screen
+        name="Offer"
+        component={MovieScreen}
+        options={{ title: 'Annonce' }}
+      />
       <SearchNavigation.Screen
         name="Favoris"
         component={FavorisScreen}

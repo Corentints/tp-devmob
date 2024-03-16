@@ -1,34 +1,22 @@
-import { ReactNode, useEffect, useState } from 'react';
+import { ReactNode } from 'react';
 import { FlatList, View, StyleSheet, Text } from 'react-native';
 import ListItemMovie from './ListItemMovie';
-import Movie from '../models/Movie';
 import DisplayError from './DisplayError';
-import { getMovies } from '../services/MovieService';
+import Offer from '../models/Offer';
 
 interface ListOfMovieProps {
-  navigateFilmDetails: (id: number) => void;
+  navigateFilmDetails: (offerId: string) => void;
+  offers: Array<Offer>;
+  isLoading: boolean;
+  isError: boolean;
 }
 
-function ListOfMovie({ navigateFilmDetails }: ListOfMovieProps): ReactNode {
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [isError, setIsError] = useState<boolean>(false);
-  const [movies, setMovies] = useState<Array<Movie>>([]);
-
-  async function fetchMovie(): Promise<void> {
-    try {
-      const movies = await getMovies();
-      setMovies(movies);
-      setIsLoading(false);
-    } catch (error) {
-      // TODO error handling
-      setIsError(true);
-    }
-  }
-
-  useEffect(() => {
-    void fetchMovie();
-  }, []);
-
+function ListOfMovie({
+  navigateFilmDetails,
+  offers,
+  isLoading,
+  isError,
+}: ListOfMovieProps): ReactNode {
   if (isLoading) return <Text>Chargement en cours ...</Text>;
 
   return (
@@ -37,9 +25,9 @@ function ListOfMovie({ navigateFilmDetails }: ListOfMovieProps): ReactNode {
         <DisplayError message="Impossible de récupérer les films" />
       ) : (
         <FlatList
-          data={movies}
+          data={offers}
           renderItem={({ item }) => (
-            <ListItemMovie movie={item} onClick={() => navigateFilmDetails(item.id)} />
+            <ListItemMovie offer={item} onClick={() => navigateFilmDetails(item.id)} />
           )}
         />
       )}

@@ -1,28 +1,29 @@
-import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
-import Movie from '../models/Movie';
 import Colors from '../constants/Colors';
+import Offer from '../models/Offer';
 
 type ListItemMovieParams = {
-  movie: Movie;
+  offer: Offer;
   onClick: () => void;
 };
 
-const ListItemMovie = ({ movie, onClick }: ListItemMovieParams) => {
+const ListItemMovie = ({ offer, onClick }: ListItemMovieParams) => {
   return (
     <TouchableOpacity onPress={onClick}>
       <View style={styles.informationContainer}>
         <View style={styles.titleContainer}>
           <Text style={styles.title}>
-            {movie.title} {movie.voteAverage}
+            {offer.carMake} {offer.carModel}
           </Text>
         </View>
         <View>
-          <Text style={styles.cuisine}>{movie.releaseDate}</Text>
+          <Text style={styles.cuisine}>
+            {offer.carModelYear} - {offer.price}
+          </Text>
         </View>
         <View>
-          <Text>{movie.overview}</Text>
+          <Text>{offer.description}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -38,7 +39,6 @@ const styles = StyleSheet.create({
   },
   informationContainer: {
     flex: 1,
-    marginLeft: 12,
     justifyContent: 'center',
     marginBottom: 10,
   },

@@ -1,70 +1,106 @@
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../routes/RootStack';
-import Movie from '../models/Movie';
 import { useEffect, useState } from 'react';
-import { getMovieById } from '../services/MovieService';
 import { View, Text, StyleSheet } from 'react-native';
-import MyButton from '../components/Atoms/MyButton';
 import { useDispatch, useSelector } from 'react-redux';
 import { GlobalStoreProps } from '../store/globalStore';
-import { addFavori, removeFavori } from '../reducers/favoriReducer';
 import DisplayError from '../components/DisplayError';
+import { getOfferById } from '../services/OfferService';
+import Offer from '../models/Offer';
+import { Avatar, Button } from 'react-native-paper';
+import Colors from '../constants/Colors';
+import { addFavori, removeFavori } from '../reducers/offerReducer';
 
 type MovieScreenParams = NonNullable<unknown>;
 
-type MovieScreenProps = MovieScreenParams & StackScreenProps<RootStackParamList, 'Movie'>;
+type MovieScreenProps = MovieScreenParams & StackScreenProps<RootStackParamList, 'Offer'>;
 
-function MovieScreen({ route }: MovieScreenProps) {
-  const favoris = useSelector<GlobalStoreProps, Array<Movie>>((state) => state.favori);
-  const [movie, setMovie] = useState<Movie>();
+function MovieScreen({ route, navigation }: MovieScreenProps) {
+  const favoris = useSelector<GlobalStoreProps, Array<Offer>>((state) => state.favori);
+  const [offer, setOffer] = useState<Offer>();
   const [, setIsLoading] = useState<boolean>(true);
   const [, setOnError] = useState<boolean>(false);
 
   const dispatch = useDispatch();
 
   useEffect(() => {
-    async function getMovie(): Promise<void> {
+    async function getOffer(): Promise<void> {
       try {
-        const movie = await getMovieById(route.params.movieId);
-        if (movie == null) {
+        const offer = await getOfferById(route.params.offerId);
+        if (offer == null) {
           throw new Error('404 not found');
         }
-        setMovie(movie);
+        setOffer(offer);
       } catch (e) {
         setOnError(true);
       }
       setIsLoading(false);
     }
-    void getMovie();
+    void getOffer();
   }, []);
 
-  if (movie == null) {
+  if (offer == null) {
     return <DisplayError message={'Erreur dans le chargment du film'}></DisplayError>;
   }
 
   return (
     <View style={styles.container}>
       <View style={styles.rowOne}>
-        <Text style={{ fontSize: 24, fontWeight: '600' }}>{movie?.title}</Text>
+        <Text style={{ fontSize: 24, fontWeight: '600' }}>
+          {offer.carMake} {offer.carModel}
+        </Text>
       </View>
       <View style={styles.rowTwo}>
-        <Text style={{ fontSize: 12 }}>More and more details ... .</Text>
+        <Text style={styles.setionTitle}>Information :</Text>
+        <Text style={{ fontSize: 14 }}>Prix : {offer.price}</Text>
+        <Text style={{ fontSize: 14 }}>Année de fabrication : {offer.carModelYear}</Text>
+
+        <Text style={styles.setionTitle}>Vendeur :</Text>
+        <View
+          style={{
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 15,
+          }}
+        >
+          <Avatar.Image
+            source={{ uri: offer.avatar }}
+            size={50}
+            style={{
+              backgroundColor: Colors.background,
+              borderColor: Colors.mainGreen,
+              borderWidth: 2,
+              justifyContent: 'center',
+            }}
+          />
+          <View>
+            <Text style={{ fontSize: 14 }}>{offer.saler}</Text>
+            <View style={{ display: 'flex', flexDirection: 'row', gap: 5 }}>
+              <Text style={{ fontSize: 10 }}>Pays: {offer.country}</Text>
+              <Text style={{ fontSize: 10 }}>Ville: {offer.city}</Text>
+              <Text style={{ fontSize: 10 }}>Tel. {offer.phone}</Text>
+            </View>
+          </View>
+        </View>
+        <Text style={styles.setionTitle}>Description :</Text>
+        <Text style={{ fontSize: 14 }}>{offer.description}</Text>
       </View>
       <View style={styles.rowThree}>
-        {favoris.find((m) => m.id === movie?.id) == null ? (
-          <MyButton
-            title={'Ajouter au favoris'}
-            pressed={() => dispatch(addFavori(movie))}
-            color={'#43A047'}
-            colorPress={'#2E7D32'}
-          />
+        {favoris.find((m) => m.id === offer?.id) == null ? (
+          <Button
+            onPress={() => {
+              dispatch(addFavori(offer));
+              navigation.navigate('Favoris');
+            }}
+            mode="contained"
+          >
+            Ajouter au favoris
+          </Button>
         ) : (
-          <MyButton
-            title={'Supprimer des favoris'}
-            pressed={() => dispatch(removeFavori(movie))}
-            color={'#43A047'}
-            colorPress={'#2E7D32'}
-          />
+          <Button onPress={() => dispatch(removeFavori(offer))} mode="contained">
+            Supprimer des favoris
+          </Button>
         )}
       </View>
     </View>
@@ -77,8 +113,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  setionTitle: {
+    fontSize: 16,
+    fontWeight: '600',
+    marginVertical: 24,
+  },
   rowOne: {
-    flex: 2,
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',
