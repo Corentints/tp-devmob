@@ -11,11 +11,11 @@ import { Avatar, Button } from 'react-native-paper';
 import Colors from '../constants/Colors';
 import { addFavori, removeFavori } from '../reducers/offerReducer';
 
-type MovieScreenParams = NonNullable<unknown>;
+type OfferScreenParams = NonNullable<unknown>;
 
-type MovieScreenProps = MovieScreenParams & StackScreenProps<RootStackParamList, 'Offer'>;
+type OfferScreenProps = OfferScreenParams & StackScreenProps<RootStackParamList, 'Offer'>;
 
-function MovieScreen({ route, navigation }: MovieScreenProps) {
+function OfferScreen({ route, navigation }: OfferScreenProps) {
   const favoris = useSelector<GlobalStoreProps, Array<Offer>>((state) => state.favori);
   const [offer, setOffer] = useState<Offer>();
   const [, setIsLoading] = useState<boolean>(true);
@@ -107,7 +107,7 @@ function MovieScreen({ route, navigation }: MovieScreenProps) {
   );
 }
 
-export default MovieScreen;
+export default OfferScreen;
 
 const styles = StyleSheet.create({
   container: {

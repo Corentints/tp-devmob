@@ -1,22 +1,22 @@
 import { ReactNode } from 'react';
 import { FlatList, View, StyleSheet, Text } from 'react-native';
-import ListItemMovie from './ListItemMovie';
+import ListItemOffer from './ListItemOffer';
 import DisplayError from './DisplayError';
 import Offer from '../models/Offer';
 
-interface ListOfMovieProps {
+interface ListOfOffersProps {
   navigateFilmDetails: (offerId: string) => void;
   offers: Array<Offer>;
   isLoading: boolean;
   isError: boolean;
 }
 
-function ListOfMovie({
+function ListOfOffers({
   navigateFilmDetails,
   offers,
   isLoading,
   isError,
-}: ListOfMovieProps): ReactNode {
+}: ListOfOffersProps): ReactNode {
   if (isLoading) return <Text>Chargement en cours ...</Text>;
 
   return (
@@ -27,7 +27,7 @@ function ListOfMovie({
         <FlatList
           data={offers}
           renderItem={({ item }) => (
-            <ListItemMovie offer={item} onClick={() => navigateFilmDetails(item.id)} />
+            <ListItemOffer offer={item} onClick={() => navigateFilmDetails(item.id)} />
           )}
         />
       )}
@@ -35,7 +35,7 @@ function ListOfMovie({
   );
 }
 
-export default ListOfMovie;
+export default ListOfOffers;
 
 const styles = StyleSheet.create({
   container: {

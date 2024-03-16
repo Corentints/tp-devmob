@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import { GlobalStoreProps } from '../store/globalStore';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
-import ListItemMovie from '../components/ListItemMovie';
+import ListItemOffer from '../components/ListItemOffer';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../routes/RootStack';
 import Offer from '../models/Offer';
@@ -27,7 +27,7 @@ function FavorisScreen({ navigation }: Props) {
       <FlatList
         data={favoris}
         renderItem={({ item }) => (
-          <ListItemMovie offer={item} onClick={() => navigateFilmDetails(item.id)} />
+          <ListItemOffer offer={item} onClick={() => navigateFilmDetails(item.id)} />
         )}
       />
     </View>

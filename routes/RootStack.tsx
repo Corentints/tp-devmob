@@ -1,7 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import SearchScreen from '../screens/SearchScreen';
-import MovieScreen from '../screens/MovieScreen';
+import OfferScreen from '../screens/OfferScreen';
 import FavorisScreen from '../screens/FavorisScreen';
 
 export type RootStackParamList = {
@@ -25,7 +25,7 @@ function RootStack() {
       />
       <SearchNavigation.Screen
         name="Offer"
-        component={MovieScreen}
+        component={OfferScreen}
         options={{ title: 'Annonce' }}
       />
       <SearchNavigation.Screen

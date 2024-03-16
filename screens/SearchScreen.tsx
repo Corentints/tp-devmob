@@ -1,5 +1,5 @@
 import { View, StyleSheet, Text } from 'react-native';
-import ListOfMovie from '../components/ListOfMovie';
+import ListOfOffers from '../components/ListOfOffers';
 import { StackScreenProps } from '@react-navigation/stack';
 import { RootStackParamList } from '../routes/RootStack';
 import { useDispatch, useSelector } from 'react-redux';
@@ -84,7 +84,7 @@ function SearchScreen({ navigation }: Props) {
         <Text style={styles.offersLength}>
           Nombre d&apos;annonce : <Text style={styles.offersCount}>{offers.length}</Text>
         </Text>
-        <ListOfMovie
+        <ListOfOffers
           offers={offers}
           isLoading={isLoading}
           isError={isError}

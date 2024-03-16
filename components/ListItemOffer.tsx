@@ -4,15 +4,15 @@ import Colors from '../constants/Colors';
 import Offer from '../models/Offer';
 import { useDispatch, useSelector } from 'react-redux';
 import { GlobalStoreProps } from '../store/globalStore';
-import { IconButton, TextInput } from 'react-native-paper';
+import { IconButton } from 'react-native-paper';
 import { addFavori, removeFavori } from '../reducers/offerReducer';
 
-type ListItemMovieParams = {
+type ListItemOfferParams = {
   offer: Offer;
   onClick: () => void;
 };
 
-const ListItemMovie = ({ offer, onClick }: ListItemMovieParams) => {
+const ListItemOffer = ({ offer, onClick }: ListItemOfferParams) => {
   const favoris = useSelector<GlobalStoreProps, Array<Offer>>((state) => state.favori);
   const isOfferInFavoris = favoris.some((favori) => favori.id === offer.id);
 
@@ -52,7 +52,7 @@ const ListItemMovie = ({ offer, onClick }: ListItemMovieParams) => {
   );
 };
 
-export default ListItemMovie;
+export default ListItemOffer;
 
 const styles = StyleSheet.create({
   container: {
