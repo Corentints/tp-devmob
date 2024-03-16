@@ -2,6 +2,10 @@ import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 
 import Colors from '../constants/Colors';
 import Offer from '../models/Offer';
+import { useDispatch, useSelector } from 'react-redux';
+import { GlobalStoreProps } from '../store/globalStore';
+import { IconButton, TextInput } from 'react-native-paper';
+import { addFavori, removeFavori } from '../reducers/offerReducer';
 
 type ListItemMovieParams = {
   offer: Offer;
@@ -9,6 +13,11 @@ type ListItemMovieParams = {
 };
 
 const ListItemMovie = ({ offer, onClick }: ListItemMovieParams) => {
+  const favoris = useSelector<GlobalStoreProps, Array<Offer>>((state) => state.favori);
+  const isOfferInFavoris = favoris.some((favori) => favori.id === offer.id);
+
+  const dispatch = useDispatch();
+
   return (
     <TouchableOpacity onPress={onClick}>
       <View style={styles.informationContainer}>
@@ -16,6 +25,19 @@ const ListItemMovie = ({ offer, onClick }: ListItemMovieParams) => {
           <Text style={styles.title}>
             {offer.carMake} {offer.carModel}
           </Text>
+
+          <IconButton
+            icon={isOfferInFavoris ? 'heart' : 'heart-outline'}
+            iconColor={Colors.mainGreen}
+            size={20}
+            onPress={() => {
+              if (isOfferInFavoris) {
+                dispatch(removeFavori(offer));
+              } else {
+                dispatch(addFavori(offer));
+              }
+            }}
+          />
         </View>
         <View>
           <Text style={styles.cuisine}>
@@ -44,6 +66,7 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     flexDirection: 'row',
+    alignItems: 'center',
   },
   statsContainer: {
     flexDirection: 'row',
